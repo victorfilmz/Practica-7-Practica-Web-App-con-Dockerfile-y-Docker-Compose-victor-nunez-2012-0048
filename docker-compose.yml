@@ -1,0 +1,33 @@
+services:
+  web:
+    build: ./src
+    container_name: servidor-web-victor
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=victor
+      - DB_PASSWORD=secreto
+      - DB_NAME=holamundo_db
+    volumes:
+      - ./src:/app
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: servidor-mysql-victor
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=holamundo_db
+      - MYSQL_USER=victor
+      - MYSQL_PASSWORD=secreto
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
